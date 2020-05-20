@@ -10,6 +10,8 @@ import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackCreateScreen from './src/screens/TrackCreateScreen';
 import AccountScreen from './src/screens/AccountScreen';
 
+import { Provider as AuthProvider } from './src/context/AuthContext';
+
 const ParentStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
@@ -63,4 +65,10 @@ const App = () => {
   );
 };
 
-export default App;
+export default () => {
+  return (
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  );
+};
