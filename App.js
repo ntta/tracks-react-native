@@ -17,7 +17,12 @@ const TrackListStack = createStackNavigator();
 
 const authFlow = () => {
   return (
-    <AuthStack.Navigator>
+    <AuthStack.Navigator
+      initialRouteName='Signup'
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <AuthStack.Screen name='Signin' component={SigninScreen} />
       <AuthStack.Screen name='Signup' component={SignupScreen} />
     </AuthStack.Navigator>
