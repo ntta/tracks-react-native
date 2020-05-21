@@ -1,4 +1,4 @@
-import { AsyncStore } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import createDataContext from './createDataContext';
 import trackerApi from '../api/tracker';
 import { navigate } from '../navigationRef';
@@ -33,10 +33,12 @@ const signup = dispatch => async ({ email, password }) => {
       })
     });
     const data = await response.json();
-    await AsyncStore.setItem('token', data.token);
-    dispatch({ type: 'signup', payload: data.token });
-    navigate('TrackList');
+    const token = data.token;
+    await AsyncStorage.setItem('token', token);
+    dispatch({ type: 'signup', payload: token });
+    navigate('mainFlow');
   } catch (err) {
+    console.log(err);
     dispatch({ type: 'add_error', payload: 'Something went wrong with sign up' });
   }
 };

@@ -11,7 +11,7 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen';
 import AccountScreen from './src/screens/AccountScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
-import { setNavigator } from './src/navigationRef';
+import { navigationRef } from './src/navigationRef';
 
 const ParentStack = createStackNavigator();
 const AuthStack = createStackNavigator();
@@ -56,7 +56,7 @@ const trackListFlow = () => {
 const App = () => {
   return (
     <NavigationContainer
-      ref={(navigator) => { setNavigator(navigator) }}
+      ref={navigationRef}
     >
       <ParentStack.Navigator
         initialRouteName='authFlow'
