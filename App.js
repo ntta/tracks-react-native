@@ -1,8 +1,11 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
 
+import ResolveAuthScreen from './src/screens/ResolveAuthScreen';
 import SignupScreen from './src/screens/SignupScreen';
 import SigninScreen from './src/screens/SigninScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
@@ -11,12 +14,22 @@ import TrackCreateScreen from './src/screens/TrackCreateScreen';
 import AccountScreen from './src/screens/AccountScreen';
 
 import { Provider as AuthProvider } from './src/context/AuthContext';
+import { Provider as LocationProvider } from './src/context/LocationContext';
+import { Provider as TrackProvider } from './src/context/TrackContext';
 import { navigationRef } from './src/navigationRef';
 
 const ParentStack = createStackNavigator();
 const AuthStack = createStackNavigator();
 const MainTab = createBottomTabNavigator();
 const TrackListStack = createStackNavigator();
+
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: '#fff',
+  },
+};
 
 const authFlow = () => {
   return (
@@ -36,9 +49,30 @@ const mainFlow = () => {
   return (
     <MainTab.Navigator
     >
-      <MainTab.Screen name='trackListFlow' component={trackListFlow} options={{ title: 'Tracks' }}/>
-      <MainTab.Screen name='TrackCreate' component={TrackCreateScreen} options={{ title: 'Create' }}/>
-      <MainTab.Screen name='Account' component={AccountScreen} options={{ title: 'Account' }}/>
+      <MainTab.Screen
+        name='trackListFlow'
+        component={trackListFlow}
+        options={{
+          title: 'Tracks',
+          tabBarIcon: () => {return <Feather name='list' size={24} />}
+        }}
+      />
+      <MainTab.Screen
+        name='TrackCreate'
+        component={TrackCreateScreen}
+        options={{
+          title: 'Create',
+          tabBarIcon: () => {return <Feather name='plus' size={24} />}
+        }}
+      />
+      <MainTab.Screen
+        name='Account'
+        component={AccountScreen}
+        options={{
+          title: 'Account',
+          tabBarIcon: () => {return <Feather name='settings' size={24} />}
+        }}
+      />
     </MainTab.Navigator>
 
   );
@@ -46,32 +80,44 @@ const mainFlow = () => {
 
 const trackListFlow = () => {
   return (
-    <TrackListStack.Navigator>
-      <TrackListStack.Screen name ='TrackList' component={TrackListScreen} />
-      <TrackListStack.Screen name ='TrackDetail' component={TrackDetailScreen} />
+    <TrackListStack.Navigator
+    >
+      <TrackListStack.Screen name ='TrackList' component={TrackListScreen} options={{ title: 'Track List', headerShown: false }} />
+      <TrackListStack.Screen name ='TrackDetail' component={TrackDetailScreen} options={{ title: 'Track Detail' }} />
     </TrackListStack.Navigator>
   );
 }
 
 const App = () => {
   return (
-    <NavigationContainer
-      ref={navigationRef}
-    >
-      <ParentStack.Navigator
-        initialRouteName='authFlow'
+    <SafeAreaProvider>
+      <NavigationContainer
+        ref={navigationRef}
+        theme={MyTheme}
       >
-        <ParentStack.Screen name='authFlow' component={authFlow} options={{ headerShown: false }} />
-        <ParentStack.Screen name='mainFlow' component={mainFlow} options={{ headerShown: false }} />
-      </ParentStack.Navigator>
-    </NavigationContainer>
+        <ParentStack.Navigator
+          initialRouteName='ResolveAuth'
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <ParentStack.Screen name='ResolveAuth' component={ResolveAuthScreen} />
+          <ParentStack.Screen name='authFlow' component={authFlow} />
+          <ParentStack.Screen name='mainFlow' component={mainFlow} />
+        </ParentStack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };
 
 export default () => {
   return (
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <TrackProvider>
+      <LocationProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </LocationProvider>
+    </TrackProvider>
   );
 };

@@ -1,25 +1,34 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { Context as AuthContext } from '../context/AuthContext';
 import Spacer from '../components/Spacer';
+import ScreenTitle from '../components/ScreenTitle';
 
 const AccountScreen = () => {
+  const { signout } = useContext(AuthContext);
+
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <ScreenTitle text='Your Account' />
       <Spacer>
         <Button
           title='Sign Out'
+          onPress={signout}
         />
       </Spacer>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+  },
+  title: {
+    margin: 12
   },
 });
 
