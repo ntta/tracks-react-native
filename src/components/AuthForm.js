@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, Input, Button } from 'react-native-elements';
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { Text, Input, Button } from "react-native-elements";
 
-import Spacer from './Spacer';
-import ScreenTitle from './ScreenTitle';
-
-import { Context as AuthContext } from '../context/AuthContext';
+import Spacer from "./Spacer";
+import ScreenTitle from "./ScreenTitle";
 
 const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <>
       <ScreenTitle text={headerText} />
       <Spacer />
       <Input
-        label='Email'
+        label="Email"
         value={email}
         onChangeText={setEmail}
-        autoCapitalize='none'
+        autoCapitalize="none"
         autoCorrect={false}
       />
       <Spacer />
       <Input
         secureTextEntry
-        label='Password'
+        label="Password"
         value={password}
         onChangeText={setPassword}
-        autoCapitalize='none'
+        autoCapitalize="none"
         autoCorrect={false}
       />
-      {errorMessage ? <Text style={styles.errorMessage}>{errorMessage}</Text> : null}
+      {errorMessage ? (
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      ) : null}
       <Spacer>
         <Button
           title={submitButtonText}
@@ -45,7 +45,7 @@ const AuthForm = ({ headerText, errorMessage, onSubmit, submitButtonText }) => {
 const styles = StyleSheet.create({
   errorMessage: {
     fontSize: 16,
-    color: 'red',
+    color: "red",
     marginLeft: 15,
   },
 });
